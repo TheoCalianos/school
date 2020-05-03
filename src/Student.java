@@ -47,6 +47,7 @@ public class Student {
     }
 
     private static String SQLstudent = "SELECT * FROM students";
+    private static String SQLstudentLook = "SELECT * FROM students WHERE First_Name LIKE?";
     public static void getStudents(ResultSet rs) throws SQLException {
         while(rs.next()){
             StringBuffer buffer = new StringBuffer();
@@ -72,6 +73,23 @@ public class Student {
             System.err.println(e);
         }
         return rs;
+    }
+    public static Integer getStudentbuyName(String name) throws SQLException{
+        ResultSet rs = null;
+        try {
+            Connection conn = com.company.DBconnection.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(SQLstudentLook, ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
+            stmt.setString(1,name);
+            rs = stmt.executeQuery();
+            while(rs.next()) {
+                return rs.getInt("Student_ID");
+            }
+        }
+        catch (Exception e)
+        {
+            System.err.println(e);
+        }
+        return -1;
     }
     public void insertStudent(int GPA, String Name, int StudentID, String email, String Password) throws SQLException {
         try {

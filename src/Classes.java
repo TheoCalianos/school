@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.StringTokenizer;
 
 public class Classes {
     public String getName() {
@@ -46,7 +47,9 @@ public class Classes {
 
     private String Grades;
 
-    private static String SQLclasses = "SELECT * FROM class WHERE Name LIKE?";
+    private static String SQLclasses = "SELECT * FROM class WHERE Name LIKE ?";
+
+    private static String SQLclassesbyStudentID = "SELECT * FROM class WHERE Student_ID LIKE ?";
     public static void getTeacher(ResultSet rs) throws SQLException {
         while(rs.next()){
             StringBuffer buffer = new StringBuffer();
@@ -57,22 +60,13 @@ public class Classes {
 
         }
     }
-    public static ResultSet calltoTeachersTable() throws SQLException{
-        String name;
-        try {
-            name = Input.getString("enter name of Classes");
-        }
-        catch (Exception e)
-        {
-            System.err.println("Invalid name");
-            return null;
-        }
+    public static ResultSet GetclassesofStudent(String name) throws SQLException {
+        Integer StudentID = Student.getStudentbuyName(name);
         ResultSet rs = null;
         try {
             Connection conn = com.company.DBconnection.getConnection();
-            PreparedStatement stmt = conn.prepareStatement(SQLclasses, ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
-            stmt.setString(1,name);
-
+            PreparedStatement stmt = conn.prepareStatement(SQLclassesbyStudentID, ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
+            stmt.setInt(1,StudentID);
             rs = stmt.executeQuery();
             return rs;
         }

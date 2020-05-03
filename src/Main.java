@@ -22,12 +22,12 @@ public class Main {
         Andrew.insertStudent(Andrew.getGPA(),Andrew.getStudentName(),Andrew.getStudentID(),Andrew.getStudentEmail(),Andrew.getStudentPassword());
         rs = Student.calltoStudentTable();
         Student.getStudents(rs);*/
-        Teacher MrDA = new Teacher();
-        MrDA.setClassID(1);
-        MrDA.setEmail("MrDA@gmail.com");
-        MrDA.setName("MR.DA");
-        MrDA.setPassword("MR.DAAAA");
-        MrDA.insertTeacher(MrDA.getName(), MrDA.getClassID(),MrDA.getEmail(),MrDA.getPassword());
+        //Teacher MrDA = new Teacher();
+        //MrDA.setClassID(1);
+        //MrDA.setEmail("MrDA@gmail.com");
+        //MrDA.setName("MR.DA");
+       // MrDA.setPassword("MR.DAAAA");
+        //MrDA.insertTeacher(MrDA.getName(), MrDA.getClassID(),MrDA.getEmail(),MrDA.getPassword());
         //rs = Teacher.calltoTeachersTable();
         //closeRs(rs);
     }
