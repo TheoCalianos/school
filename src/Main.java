@@ -29,6 +29,7 @@ public class Main {
        // MrDA.setPassword("MR.DAAAA");
         //MrDA.insertTeacher(MrDA.getName(), MrDA.getClassID(),MrDA.getEmail(),MrDA.getPassword());
         //rs = Teacher.calltoTeachersTable();
+        System.out.println(Student.StudentLogin("Theocalianos18@gmail.com","poop"));
         //closeRs(rs);
     }
 }

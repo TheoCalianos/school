@@ -47,6 +47,7 @@ public class Student {
     }
 
     private static String SQLstudent = "SELECT * FROM students";
+    private static String SQLStudentLogin = "SELECT * FROM students WHERE Email LIKE ?";
     private static String SQLstudentLook = "SELECT * FROM students WHERE First_Name LIKE?";
     public static void getStudents(ResultSet rs) throws SQLException {
         while(rs.next()){
@@ -74,6 +75,28 @@ public class Student {
         }
         return rs;
     }
+    public static boolean StudentLogin(String email, String password) throws SQLException {
+        ResultSet rs = null;
+        try {
+            Connection conn = com.company.DBconnection.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(SQLStudentLogin, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+            stmt.setString(1, email);
+
+            rs = stmt.executeQuery();
+            while(rs.next()) {
+                if (rs.getString("password").equals(password)) {
+                    return true;
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            System.out.println(e);
+            return false;
+        }
+        return false;
+    }
+
     public static Integer getStudentbuyName(String name) throws SQLException{
         ResultSet rs = null;
         try {
