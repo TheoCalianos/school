@@ -1,4 +1,6 @@
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -12,6 +14,7 @@ import sun.security.util.Password;
 
 
 import javax.xml.soap.Text;
+import java.sql.SQLException;
 
 public class LoginForm extends Application {
     Stage window;
@@ -44,9 +47,35 @@ public class LoginForm extends Application {
         grid.add(pwBox, 1,2);
 
         Button loginbtn= new Button("Login");
+        loginbtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent e) {
+                if(!pwBox.getText().isEmpty() && !txtUser.getText().isEmpty())
+                {
+                    try {
+                        if( Student.StudentLogin(txtUser.getText(),pwBox.getText()))
+                        {
+                            System.out.println("login sucessful student");
+                            Controller.loadStudent(txtUser.getText());
+                            window.close();
+                        }
+                        else if(Teacher.TeacherLogin(txtUser.getText(),pwBox.getText()))
+                        {
+                            System.out.println("login sucessful teacher");
+                            Controller.loadTeacher(txtUser.getText());
+                            window.close();
+                        }
+                        else{
+                            System.out.println("Username or password not found");
+                        }
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+                }
+            }
+        });
         grid.add(loginbtn,1, 3);
 
-        Scene scene=new Scene(grid,500,500);
+        Scene scene=new Scene(grid,800,800);
         window.setScene(scene);
         window.show();
     }

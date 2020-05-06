@@ -48,7 +48,8 @@ public class Student {
 
     private static String SQLstudent = "SELECT * FROM students";
     private static String SQLStudentLogin = "SELECT * FROM students WHERE Email LIKE ?";
-    private static String SQLstudentLook = "SELECT * FROM students WHERE First_Name LIKE?";
+    private static String SQLstudentLook = "SELECT * FROM students WHERE First_Name LIKE ?";
+    private static String SQLstudentLookID = "SELECT * FROM students WHERE Student_ID LIKE ?";
     public static void getStudents(ResultSet rs) throws SQLException {
         while(rs.next()){
             StringBuffer buffer = new StringBuffer();
@@ -96,13 +97,31 @@ public class Student {
         }
         return false;
     }
-
-    public static Integer getStudentbuyName(String name) throws SQLException{
+    public static String getStudentNamebyemail(String email) throws SQLException
+    {
         ResultSet rs = null;
         try {
             Connection conn = com.company.DBconnection.getConnection();
-            PreparedStatement stmt = conn.prepareStatement(SQLstudentLook, ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
-            stmt.setString(1,name);
+            PreparedStatement stmt = conn.prepareStatement(SQLStudentLogin, ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
+            stmt.setString(1,email);
+            rs = stmt.executeQuery();
+            while(rs.next()) {
+                return rs.getString("First_Name");
+            }
+        }
+        catch (Exception e)
+        {
+            System.err.println(e);
+        }
+        return "";
+
+    }
+    public static Integer getStudentbuyName(String email) throws SQLException{
+        ResultSet rs = null;
+        try {
+            Connection conn = com.company.DBconnection.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(SQLStudentLogin, ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
+            stmt.setString(1,email);
             rs = stmt.executeQuery();
             while(rs.next()) {
                 return rs.getInt("Student_ID");
@@ -114,12 +133,29 @@ public class Student {
         }
         return -1;
     }
+    public static String getStudentbuyID(int StudentID) throws SQLException{
+        ResultSet rs = null;
+        try {
+            Connection conn = com.company.DBconnection.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(SQLstudentLookID, ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
+            stmt.setInt(1,StudentID);
+            rs = stmt.executeQuery();
+            while(rs.next()) {
+                return rs.getString("First_Name");
+            }
+        }
+        catch (Exception e)
+        {
+            System.err.println(e);
+        }
+        return "";
+    }
     public void insertStudent(int GPA, String Name, int StudentID, String email, String Password) throws SQLException {
         try {
             Connection conn = com.company.DBconnection.getConnection();
             Statement st = conn.createStatement();
             String insert =  String.format(" VALUES (%d, " +
-                    "\""+Name+"\", %d, \" "+Email+" \", \""+Password+"\");" , GPA, StudentID);
+                    "\""+Name+"\",%d,\""+Email+" \",\""+Password+"\");" , GPA, StudentID);
             System.out.println("INSERT INTO `students` (`GPA`, `First_Name`, `Student_ID`, `Email`, `password`)" + insert);
             st.executeUpdate("INSERT INTO `students` (`GPA`, `First_Name`, `Student_ID`, `Email`, `password`)" + insert);
 

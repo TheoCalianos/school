@@ -50,6 +50,7 @@ public class Classes {
     private static String SQLclasses = "SELECT * FROM class WHERE Name LIKE ?";
 
     private static String SQLclassesbyStudentID = "SELECT * FROM class WHERE Student_ID LIKE ?";
+    private static String SQLclassesbyTeacherID = "SELECT * FROM class WHERE Teacher_ID LIKE ?";
     public static void getTeacher(ResultSet rs) throws SQLException {
         while(rs.next()){
             StringBuffer buffer = new StringBuffer();
@@ -60,13 +61,28 @@ public class Classes {
 
         }
     }
-    public static ResultSet GetclassesofStudent(String name) throws SQLException {
-        Integer StudentID = Student.getStudentbuyName(name);
+    public static ResultSet GetclassesofStudent(String email) throws SQLException {
+        Integer StudentID = Student.getStudentbuyName(email);
         ResultSet rs = null;
         try {
             Connection conn = com.company.DBconnection.getConnection();
             PreparedStatement stmt = conn.prepareStatement(SQLclassesbyStudentID, ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
             stmt.setInt(1,StudentID);
+            rs = stmt.executeQuery();
+            return rs;
+        }
+        catch (Exception e)
+        {
+            System.err.println(e);
+        }
+        return rs;
+    }
+    public static ResultSet GetclassesofTeacher(int teacherID) throws SQLException {
+        ResultSet rs = null;
+        try {
+            Connection conn = com.company.DBconnection.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(SQLclassesbyTeacherID, ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
+            stmt.setInt(1,teacherID);
             rs = stmt.executeQuery();
             return rs;
         }

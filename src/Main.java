@@ -26,12 +26,12 @@ public class Main {
         Student.getStudents(rs);*/
         //Teacher MrDA = new Teacher();
         //MrDA.setClassID(1);
-        //MrDA.setEmail("MrDA@gmail.com");
-        //MrDA.setName("MR.DA");
-       // MrDA.setPassword("MR.DAAAA");
+        //MrDA.setEmail("Breski@capecod.edu");
+        //MrDA.setName("MR.Breski");
+        //MrDA.setPassword("MR.Breski21");
         //MrDA.insertTeacher(MrDA.getName(), MrDA.getClassID(),MrDA.getEmail(),MrDA.getPassword());
         //rs = Teacher.calltoTeachersTable();
-        System.out.println(Student.StudentLogin("Theocalianos18@gmail.com","poop"));
+        //System.out.println(Teacher.TeacherLogin("Breski@capecod.edu","MR.Breski21"));
         //closeRs(rs);
     }
 }

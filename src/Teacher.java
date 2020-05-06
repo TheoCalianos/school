@@ -41,7 +41,7 @@ public class Teacher {
     private String Password;
 
     private Integer ClassID;
-    private static String SQLteacherLogin = "SELECT * FROM students WHERE Email LIKE ?";
+    private static String SQLteacherLogin = "SELECT * FROM teacher WHERE email LIKE ?";
     private static String SQLteacher = "SELECT * FROM teacher WHERE Name LIKE?";
     public static void getTeacher(ResultSet rs) throws SQLException {
         while(rs.next()){
@@ -53,30 +53,23 @@ public class Teacher {
 
         }
     }
-    public static ResultSet calltoTeachersTable() throws SQLException{
-        String name;
-        try {
-            name = Input.getString("enter name of Teacher");
-        }
-        catch (Exception e)
-        {
-            System.err.println("Invalid name");
-            return null;
-        }
+    public static Integer Teacherfindbyemail(String email) throws SQLException{
         ResultSet rs = null;
         try {
             Connection conn = com.company.DBconnection.getConnection();
-            PreparedStatement stmt = conn.prepareStatement(SQLteacher, ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
-            stmt.setString(1,name);
+            PreparedStatement stmt = conn.prepareStatement(SQLteacherLogin, ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
+            stmt.setString(1,email);
 
             rs = stmt.executeQuery();
-            return rs;
+            while(rs.next()) {
+                return rs.getInt("Teacher_ID");
+            }
         }
         catch (Exception e)
         {
             System.err.println(e);
         }
-        return rs;
+        return -1;
     }
     public static boolean TeacherLogin(String email, String password) throws SQLException {
         ResultSet rs = null;
@@ -87,14 +80,14 @@ public class Teacher {
 
             rs = stmt.executeQuery();
             while(rs.next()) {
-                if (rs.getString("password").equals(password)) {
+                if (rs.getString("Password").equals(password)) {
                     return true;
                 }
             }
         }
         catch (Exception e)
         {
-            System.out.println(e);
+            System.err.println(e);
             return false;
         }
         return false;
@@ -104,7 +97,7 @@ public class Teacher {
             Connection conn = com.company.DBconnection.getConnection();
             Statement st = conn.createStatement();
             String insert =  String.format(" VALUES (" +
-                    "\""+Name+"\", %d, \" "+Email+" \", \""+Password+"\");", ClassID);
+                    "\""+Name+"\", %d, \""+Email+"\",\""+Password+"\");", ClassID);
             System.out.println("INSERT INTO `teacher` (`Name`, `ClassID`, `Email`, `password`)" + insert);
             st.executeUpdate("INSERT INTO `teacher` (`Name`, `ClassID`, `Email`, `password`)" + insert);
 
