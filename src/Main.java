@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+
 public class Main {
     public static void closeRs(ResultSet rs) throws SQLException {
         if(rs != null){
@@ -13,6 +14,7 @@ public class Main {
     }
     public static void main(String args[]) throws SQLException {
         ResultSet rs = null;
+
         /*Student Andrew = new Student();
         Andrew.setGPA(3);
         Andrew.setStudentEmail("andrew@gmail.com");
